@@ -14,14 +14,41 @@ router.post("/user", async (req, res) => {
     }
   });
 
-router.put("/user/:id",async (req,res)=>{
+router.get("/user",async(req,res)=>{
   try{
-
-  }catch (e){
+    const data = await User.find();
+    console.log("Data Fetch");
+    res.status(200).json(data);
+  }catch(e){
     res.status(500).json({
-      error:e.message
+      error: e.message,
     });
   }
 });  
+
+router.put('/user/:id', async (req, res) => {
+  const { id } = req.params;
+  const { firstName, lastName} = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(id, { firstName, lastName }, { new: true });
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+}); 
+
+router.delete('/user/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByIdAndDelete(id);
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+});
 
   module.exports = router;
