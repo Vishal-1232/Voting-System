@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = mongoose.Schema({
     name:{
@@ -64,6 +65,40 @@ const userSchema = mongoose.Schema({
       required:true
     }
 },{ timestamps: true });
+
+userSchema.pre('save',async function(next){
+  const user = this;
+   
+  // Hashed the password only if its new or modified
+  if(!user.isModified('password')){
+    return next();
+  }
+  
+  try{
+    // hash password geneartion
+    const salt = await bcrypt.genSalt(10);
+
+    // hashing
+    const hashedPassword = await bcrypt.hash(user.password,salt);
+
+    // Override plain password with hashed password
+    user.password = hashedPassword;
+    next();
+
+  }catch(e){
+    return next(e);
+  }
+});
+
+userSchema.methods.comparePassword = async function (enteredPassword){
+  try{
+    const isMatch = await bcrypt.compare(enteredPassword,this.password);
+    return isMatch;
+  }catch(e){
+    throw e;
+  }
+}
+
 
 const User = mongoose.model('User',userSchema);
 module.exports = User;
