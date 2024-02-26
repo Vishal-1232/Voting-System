@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require("../models/user");
 
-router.post("/user", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
       const user = User(req.body);
       const response = await user.save();
@@ -14,7 +14,7 @@ router.post("/user", async (req, res) => {
     }
   });
 
-router.get("/user",async(req,res)=>{
+router.get("/",async(req,res)=>{
   try{
     const data = await User.find();
     console.log("Data Fetch");
@@ -26,7 +26,7 @@ router.get("/user",async(req,res)=>{
   }
 });  
 
-router.put('/user/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { firstName, lastName} = req.body;
 
@@ -39,7 +39,7 @@ router.put('/user/:id', async (req, res) => {
   }
 }); 
 
-router.delete('/user/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {

@@ -54,6 +54,14 @@ const userSchema = mongoose.Schema({
     isVoted:{
       type:Boolean,
       default:false
+    },
+    username:{
+      type:String,
+      required:true
+    },
+    password:{
+      type:String,
+      required:true
     }
 },{ timestamps: true });
 
