@@ -1,27 +1,37 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-    firstName:{
+    name:{
         type:String,
         required:true,
         trim:true,
-        lowercase:true,
     },
-    lastName:{
-        type:String,
-        required:true,
-        trim:true,
-        lowercase:true,
+    age:{
+      type:Number,
+      required:true
+    },
+    address:{
+      type:String,
+      required:true
+    },
+    aadharCardNumber:{
+      type:Number,
+      required:true,
+      unique:true
+    },
+    password:{
+      type:String,
+      required:true
     },
     mobile:{
         type:String,
         //unique:true,
-        required:true,
+        //required:true,
     },
     email:{
         type:String,
         //unique:true,
-        required:true,
+        //required:true,
         trim:true,
         lowercase:true,
         validate: {
@@ -34,15 +44,18 @@ const userSchema = mongoose.Schema({
             message: "Plese enter valid email address",
           },
     },
-    
-    userType:{
+    role:{
       type:String,
-      enum:['admin','user','organization','superUser'],
-      required:true,
+      enum:["voter","admin"],
+      default:"voter",
       trim:true,
       lowercase:true
+    },
+    isVoted:{
+      type:Boolean,
+      default:false
     }
 },{ timestamps: true });
 
-const user = mongoose.model('users',userSchema);
-module.exports = user;
+const User = mongoose.model('User',userSchema);
+module.exports = User;
