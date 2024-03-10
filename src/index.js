@@ -4,6 +4,7 @@ const app = express();
 require('dotenv').config();
 const userRoter = require('./routes/userRoutes');
 const adminRouter = require("./routes/adminRoutes");
+const votingRouter = require("./routes/votingRoutes");
 const logger = require("./middlewares/logger");
 const passport = require("./middlewares/localAuth");
 const { jwtAuthMiddleware } = require("./middlewares/jwtAuth.middleware");
@@ -14,6 +15,7 @@ app.use(logger);
 // app.use('/user',passport.authenticate('local',{session:false}),userRoter);
 app.use('/user',userRoter);
 app.use('/admin',jwtAuthMiddleware,adminRouter);
+app.use("/voting",jwtAuthMiddleware,votingRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port: ${process.env.PORT}`);
